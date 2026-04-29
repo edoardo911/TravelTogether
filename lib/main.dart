@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:travel_together/auth/auth_service.dart';
+import 'package:travel_together/auth/login.dart';
 import 'package:travel_together/home/home.dart';
 import 'package:travel_together/auth/register.dart';
 import 'package:travel_together/auth/splash.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         '/': (_) => SplashScreen(authService: AuthService(FlutterSecureStorage())),
         '/home': (_) => HomeScreen(),
         '/register': (_) => RegisterScreen(),
+        '/login': (_) => LoginScreen(),
       },
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
