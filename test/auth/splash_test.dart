@@ -1,0 +1,49 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:travel_together/auth/auth_service.dart';
+import 'package:travel_together/auth/splash.dart';
+
+class MockAuthService extends Mock implements AuthService {}
+
+void main() {
+  testWidgets("splash navigation to home", (tester) async {
+    final auth = MockAuthService();
+
+    when(() => auth.isLoggedIn()).thenAnswer((_) async => true);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        routes: {
+          '/home': (_) => const Text("HOME"),
+          '/register': (_) => const Text("REGISTER"),
+        },
+        home: SplashScreen(authService: auth),
+      ),
+    );
+
+    await tester.pump();
+    await tester.pumpAndSettle();
+    expect(find.text("HOME"), findsOneWidget);
+  });
+
+  testWidgets("splash navigation to register", (tester) async {
+    final auth = MockAuthService();
+
+    when(() => auth.isLoggedIn()).thenAnswer((_) async => false);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        routes: {
+          '/home': (_) => const Text("HOME"),
+          '/register': (_) => const Text("REGISTER"),
+        },
+        home: SplashScreen(authService: auth),
+      ),
+    );
+
+    await tester.pump();
+    await tester.pumpAndSettle();
+    expect(find.text("REGISTER"), findsOneWidget);
+  });
+}
