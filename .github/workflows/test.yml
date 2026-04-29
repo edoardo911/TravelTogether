@@ -1,4 +1,4 @@
-name: Build & Release APK
+name: Run Tests
 
 on:
   pull_request:
