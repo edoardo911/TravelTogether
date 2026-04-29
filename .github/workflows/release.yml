@@ -3,8 +3,6 @@ name: Build & Release APK
 on:
   push:
     branches: [ production ]
-  pull_request:
-    branches: [ production ]
 
 jobs:
   build:
