@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:travel_together/auth/auth_service.dart';
-import 'package:travel_together/auth/home.dart';
+import 'package:travel_together/home/home.dart';
 import 'package:travel_together/auth/register.dart';
 import 'package:travel_together/auth/splash.dart';
+import 'package:travel_together/themes/theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,6 +23,9 @@ class MyApp extends StatelessWidget {
         '/home': (_) => HomeScreen(),
         '/register': (_) => RegisterScreen(),
       },
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: ThemeMode.system,
     );
   }
 }
