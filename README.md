@@ -5,3 +5,10 @@ L'app consiste in un social network in cui gli utenti possono creare il proprio 
 altri utenti e organizzare viaggi insieme.
 L'app gestisce l'autenticazione con AWS Cognito, API REST con AWS Lambda, database tramite MongoDB
 e ha una pipeline di CI/CD che testa, compila l'APK e la rilascia automaticamente sotto le release di GitHub.
+
+## Tecnologie
+
+- Flutter: UI/UX cross-platform (Android & iOS)
+- MongoDB: database non relazionale
+- AWS Lambda: serverless API REST
+- AWS Cognito: autenticazione utenti
