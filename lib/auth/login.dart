@@ -4,31 +4,27 @@ import 'package:travel_together/auth/auth_service.dart';
 import 'package:travel_together/widgets/pill_button.dart';
 import 'package:travel_together/widgets/pill_input.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final _authController = AuthController(AmplifyAuthService());
 
   final _formKey = GlobalKey<FormState>();
 
-  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _passwordController2 = TextEditingController();
 
   bool _isLoading = false;
 
   @override
   void dispose() {
-    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _passwordController2.dispose();
     super.dispose();
   }
 
@@ -38,24 +34,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
     setState(() {
       _isLoading = true;
     });
-    final success = await _authController.register(_nameController.text, _emailController.text, _passwordController.text);
+    final logged = await _authController.login(_emailController.text, _passwordController.text);
     setState(() {
       _isLoading = false;
     });
-
-    if(success && mounted) {
-      Navigator.pushReplacementNamed(
-        context,
-        "/confirm",
-        arguments: {
-          "email": _emailController.text,
-          "name": _nameController.text,
-          "password": _passwordController.text,
-        }
-      );
+    if(logged && mounted) {
+      Navigator.pushReplacementNamed(context, "/home");
     } else {
       Fluttertoast.showToast(
-        msg: "Errore server",
+        msg: "Email o password errati",
         gravity: ToastGravity.BOTTOM,
       );
     }
@@ -74,21 +61,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "Sign In",
+                    "Login",
                     style: TextStyle(fontSize: 50),
                   ),
                   const SizedBox(height: 32),
-                  PillInput(
-                    hint: "Nome",
-                    controller: _nameController,
-                    validator: (value) {
-                      if(value == null || value.isEmpty) {
-                        return "Inserisci il nome";
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 24),
                   PillInput(
                     hint: "Email",
                     controller: _emailController,
@@ -114,35 +90,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       return null;
                     }
                   ),
-                  const SizedBox(height: 24),
-                  PillInput(
-                    hint: "Conferma Password",
-                    controller: _passwordController2,
-                    obscure: true,
-                    validator: (value) {
-                      if(value == null || value.length < 8) {
-                        return "Minimo 8 caratteri";
-                      }
-                      if(value != _passwordController.text) {
-                        return "Le password devono corrispondere";
-                      }
-                      return null;
-                    }
-                  ),
                   const SizedBox(height: 32),
                   PillButton(
-                    text: "Registrati",
-                    icon: Icons.arrow_right_alt_sharp,
+                    text: "Login",
+                    icon: Icons.login,
                     onPressed: _isLoading ? null : _submit,
                   ),
                   SizedBox(height: 16),
                   Text("oppure"),
                   SizedBox(height: 16),
                   PillButton(
-                    text: "Log In",
-                    icon: Icons.login,
+                    text: "Registrati",
+                    icon: Icons.arrow_right_alt_sharp,
                     primary: false,
-                    onPressed: () => Navigator.pushReplacementNamed(context, "/login"),
+                    onPressed: () => Navigator.pushReplacementNamed(context, "/register"),
                   ),
                 ],
               ),
