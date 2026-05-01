@@ -14,11 +14,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
-
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.unibg.travel_together"
@@ -39,6 +37,13 @@ android {
     }
 }
 
+dependencies {
+    implementation("com.google.crypto.tink:tink-android:1.10.0")
+
+    implementation("com.google.http-client:google-http-client:1.43.3")
+    implementation("com.google.http-client:google-http-client-jackson2:1.43.3")
+    implementation("joda-time:joda-time:2.12.5")
+}
 flutter {
     source = "../.."
 }
