@@ -1,17 +1,23 @@
+const { register } = require("./routes/register")
 
-
-/**
- * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
- */
 exports.handler = async (event) => {
-    console.log(`EVENT: ${JSON.stringify(event)}`);
-    return {
-        statusCode: 200,
-    //  Uncomment below to enable CORS requests
-    //  headers: {
-    //      "Access-Control-Allow-Origin": "*",
-    //      "Access-Control-Allow-Headers": "*"
-    //  },
-        body: JSON.stringify('Hello from Lambda!'),
-    };
+    const path = event.path;
+    const method = event.httpMethod;
+
+    try {
+        if(path === "/register" && method === "POST") {
+            return await register(event);
+        }
+
+        return {
+            statusCode: 404,
+            body: "Not found",
+        };
+    } catch(err) {
+        console.error(err);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: err.message }),
+        };
+    }
 };

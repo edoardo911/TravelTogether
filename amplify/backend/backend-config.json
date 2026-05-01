@@ -59,6 +59,14 @@
         }
       ]
     },
+    "AMPLIFY_function_userService_mongoUri": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "userService"
+        }
+      ]
+    },
     "AMPLIFY_function_userService_s3Key": {
       "usedBy": [
         {

@@ -12,3 +12,4 @@ e ha una pipeline di CI/CD che testa, compila l'APK e la rilascia automaticament
 - MongoDB: database non relazionale
 - AWS Lambda: serverless API REST
 - AWS Cognito: autenticazione utenti
+- Amplify: connettore Flutter -> AWS

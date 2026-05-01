@@ -42,7 +42,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-traveltogether-dev-24b9c-deployment/amplify-cfn-templates/auth/traveltogetherd08ada37-cloudformation-template.json",
         "logicalId": "authtraveltogetherd08ada37"
       },
-      "lastPushTimeStamp": "2026-05-01T13:36:51.545Z",
+      "lastPushTimeStamp": "2026-05-01T16:21:16.326Z",
       "output": {
         "UserPoolId": "eu-north-1_ljzJyVTfS",
         "AppClientIDWeb": "508a0giaj7tvne8vk7pj94ovli",
@@ -60,19 +60,19 @@
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
-      "lastBuildTimeStamp": "2026-05-01T13:34:36.610Z",
+      "lastBuildTimeStamp": "2026-05-01T16:19:42.834Z",
       "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2026-05-01T13:34:36.621Z",
-      "distZipFilename": "userService-326d4568496835463558-build.zip",
+      "lastPackageTimeStamp": "2026-05-01T16:19:43.269Z",
+      "distZipFilename": "userService-6a36666152504d585455-build.zip",
       "s3Bucket": {
         "deploymentBucketName": "amplify-traveltogether-dev-24b9c-deployment",
-        "s3Key": "amplify-builds/userService-326d4568496835463558-build.zip"
+        "s3Key": "amplify-builds/userService-6a36666152504d585455-build.zip"
       },
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-traveltogether-dev-24b9c-deployment/amplify-cfn-templates/function/userService-cloudformation-template.json",
         "logicalId": "functionuserService"
       },
-      "lastPushTimeStamp": "2026-05-01T13:36:52.519Z",
+      "lastPushTimeStamp": "2026-05-01T16:21:16.796Z",
       "output": {
         "LambdaExecutionRoleArn": "arn:aws:iam::595365650013:role/traveltogetherLambdaRole5fe932f6-dev",
         "Region": "eu-north-1",
@@ -80,7 +80,7 @@
         "Name": "userService-dev",
         "LambdaExecutionRole": "traveltogetherLambdaRole5fe932f6-dev"
       },
-      "lastPushDirHash": "IPFWj8sx0tszeqz+8hFnwEDlLVo="
+      "lastPushDirHash": "HmhMpQJ3MgZ7FtFV8SdtRyXOdcI="
     }
   },
   "api": {
@@ -101,7 +101,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-traveltogether-dev-24b9c-deployment/amplify-cfn-templates/api/traveltogetherapi-cloudformation-template.json",
         "logicalId": "apitraveltogetherapi"
       },
-      "lastPushTimeStamp": "2026-05-01T13:36:52.519Z",
+      "lastPushTimeStamp": "2026-05-01T16:21:16.327Z",
       "output": {
         "ApiName": "traveltogetherapi",
         "RootUrl": "https://2832pumcr4.execute-api.eu-north-1.amazonaws.com/dev",

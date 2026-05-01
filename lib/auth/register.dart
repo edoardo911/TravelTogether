@@ -39,10 +39,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
     setState(() {
       _isLoading = true;
     });
-    await _authController.register(_nameController.text, _emailController.text, _passwordController.text);
+    final success = await _authController.register(_nameController.text, _emailController.text, _passwordController.text);
     setState(() {
       _isLoading = false;
     });
+
+    if(success && mounted) {
+      Navigator.pushReplacementNamed(context, "/confirm");
+    }
   }
 
   @override
