@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:travel_together/auth/auth_service.dart';
+import 'package:travel_together/services/auth_service.dart';
 
 class SplashScreen extends StatefulWidget {
   final AuthController authController;

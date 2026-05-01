@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:travel_together/auth/auth_service.dart';
+import 'package:travel_together/services/auth_service.dart';
 import 'package:travel_together/widgets/code_input6.dart';
 
 class ConfirmPage extends StatefulWidget {

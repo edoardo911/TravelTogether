@@ -7,6 +7,7 @@ class PillInput extends StatelessWidget {
   final TextEditingController controller;
   final bool obscure;
   final Validator? validator;
+  final TextInputType inputType;
 
   const PillInput({
     super.key,
@@ -14,26 +15,28 @@ class PillInput extends StatelessWidget {
     required this.controller,
     this.obscure = false,
     this.validator,
+    this.inputType = TextInputType.text,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-        controller: controller,
-        obscureText: obscure,
-        decoration: InputDecoration(
-          hintText: hint,
-          filled: true,
-          fillColor: Theme.of(context).colorScheme.surface,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(999),
-          ),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 16,
-          ),
+      controller: controller,
+      obscureText: obscure,
+      keyboardType: inputType,
+      decoration: InputDecoration(
+        hintText: hint,
+        filled: true,
+        fillColor: Theme.of(context).colorScheme.surface,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(999),
         ),
-        validator: validator,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 16,
+        ),
+      ),
+      validator: validator,
     );
   }
 }
