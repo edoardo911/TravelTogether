@@ -43,3 +43,23 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Amplify local state
+amplify/#current-cloud-backend/
+amplify/.config/local-*
+amplify/backend/**/build/
+amplify/backend/**/dist/
+amplify/backend/**/node_modules/
+
+# AWS local credentials
+.aws/
+
+# Node deps inside lambda
+**/node_modules/
+
+# Python stuff (if present)
+Pipfile
+Pipfile.lock
+
+# Amplify hooks samples
+amplify/hooks/*.sample

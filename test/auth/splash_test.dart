@@ -4,11 +4,11 @@ import 'package:mocktail/mocktail.dart';
 import 'package:travel_together/auth/auth_service.dart';
 import 'package:travel_together/auth/splash.dart';
 
-class MockAuthService extends Mock implements AuthService {}
+class MockAuthController extends Mock implements AuthController {}
 
 void main() {
   testWidgets("splash navigation to home", (tester) async {
-    final auth = MockAuthService();
+    final auth = MockAuthController();
 
     when(() => auth.isLoggedIn()).thenAnswer((_) async => true);
 
@@ -18,7 +18,7 @@ void main() {
           '/home': (_) => const Text("HOME"),
           '/register': (_) => const Text("REGISTER"),
         },
-        home: SplashScreen(authService: auth),
+        home: SplashScreen(authController: auth),
       ),
     );
 
@@ -28,7 +28,7 @@ void main() {
   });
 
   testWidgets("splash navigation to register", (tester) async {
-    final auth = MockAuthService();
+    final auth = MockAuthController();
 
     when(() => auth.isLoggedIn()).thenAnswer((_) async => false);
 
@@ -38,7 +38,7 @@ void main() {
           '/home': (_) => const Text("HOME"),
           '/register': (_) => const Text("REGISTER"),
         },
-        home: SplashScreen(authService: auth),
+        home: SplashScreen(authController: auth),
       ),
     );
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travel_together/auth/auth_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -8,11 +9,22 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final _authController = AuthController(AmplifyAuthService());
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text("HOME PAGE"),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(onPressed: () {
+                _authController.logOut();
+                Navigator.pushReplacementNamed(context, "/");
+              },
+              child: Text("Log out")),
+          ],
+        ),
       ),
     );
   }
