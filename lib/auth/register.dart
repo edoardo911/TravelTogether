@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:travel_together/auth/auth_controller.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:travel_together/auth/auth_service.dart';
 import 'package:travel_together/widgets/pill_button.dart';
 import 'package:travel_together/widgets/pill_input.dart';
@@ -13,7 +12,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final _authController = AuthController(AuthService(FlutterSecureStorage()));
+  final _authController = AuthController(AmplifyAuthService());
 
   final _formKey = GlobalKey<FormState>();
 
@@ -45,7 +44,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
 
     if(success && mounted) {
-      Navigator.pushReplacementNamed(context, "/confirm");
+      Navigator.pushReplacementNamed(
+        context,
+        "/confirm",
+        arguments: {
+          "email": _emailController.text,
+          "name": _nameController.text,
+          "password": _passwordController.text,
+        }
+      );
+    } else {
+      Fluttertoast.showToast(
+        msg: "Errore server",
+        gravity: ToastGravity.BOTTOM,
+      );
     }
   }
 

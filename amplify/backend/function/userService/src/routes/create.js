@@ -1,6 +1,6 @@
 const { connect } = require("../services/mongo");
 
-exports.register = async (event) => {
+exports.create = async (event) => {
     const body = JSON.parse(event.body);
     const { uuid, name, email } = body;
 

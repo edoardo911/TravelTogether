@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:travel_together/auth/auth_controller.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:travel_together/auth/auth_service.dart';
 import 'package:travel_together/widgets/pill_button.dart';
 import 'package:travel_together/widgets/pill_input.dart';
@@ -13,7 +12,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _authController = AuthController(AuthService(FlutterSecureStorage()));
+  final _authController = AuthController(AmplifyAuthService());
 
   final _formKey = GlobalKey<FormState>();
 
@@ -35,10 +34,18 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = true;
     });
-    await _authController.login(_emailController.text, _passwordController.text);
+    final logged = await _authController.login(_emailController.text, _passwordController.text);
     setState(() {
       _isLoading = false;
     });
+    if(logged && mounted) {
+      Navigator.pushReplacementNamed(context, "/home");
+    } else {
+      Fluttertoast.showToast(
+        msg: "Email o password errati",
+        gravity: ToastGravity.BOTTOM,
+      );
+    }
   }
 
   @override

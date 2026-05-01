@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:travel_together/auth/auth_service.dart';
 
 class SplashScreen extends StatefulWidget {
-  final AuthService authService;
+  final AuthController authController;
 
-  const SplashScreen({super.key, required this.authService});
+  const SplashScreen({super.key, required this.authController});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _checkAuth() async {
     if(!mounted) return;
 
-    if(await widget.authService.isLoggedIn()) {
+    if(await widget.authController.isLoggedIn()) {
       Navigator.pushReplacementNamed(context, "/home");
     } else {
       Navigator.pushReplacementNamed(context, "/register");

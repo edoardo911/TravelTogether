@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:travel_together/amplify_setup.dart';
 import 'package:travel_together/auth/auth_service.dart';
 import 'package:travel_together/auth/confirm.dart';
 import 'package:travel_together/auth/login.dart';
+import 'package:travel_together/auth/splash.dart';
 import 'package:travel_together/home/home.dart';
 import 'package:travel_together/auth/register.dart';
-import 'package:travel_together/auth/splash.dart';
 import 'package:travel_together/themes/theme.dart';
 
 void main() async {
@@ -21,9 +20,9 @@ class TravelTogether extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/',
+      initialRoute: '/confirm',
       routes: {
-        '/': (_) => SplashScreen(authService: AuthService(FlutterSecureStorage())),
+        '/': (_) => SplashScreen(authController: AuthController(AmplifyAuthService())),
         '/home': (_) => HomeScreen(),
         '/register': (_) => RegisterScreen(),
         '/login': (_) => LoginScreen(),

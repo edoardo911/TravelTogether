@@ -1,12 +1,12 @@
-const { register } = require("./routes/register")
+const { create } = require("./routes/create")
 
 exports.handler = async (event) => {
     const path = event.path;
     const method = event.httpMethod;
 
     try {
-        if(path === "/register" && method === "POST") {
-            return await register(event);
+        if(path === "/create" && method === "POST") {
+            return await create(event);
         }
 
         return {
