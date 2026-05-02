@@ -1,7 +1,7 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/cupertino.dart';
 
-//abstract auth service
+//abstract auth service for testability
 abstract class AuthService {
   Future<bool> isLoggedIn();
   Future<void> signUp(String name, String email, String password);

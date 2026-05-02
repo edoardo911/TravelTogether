@@ -5,6 +5,7 @@ class PillButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final IconData? icon;
   final bool primary;
+  final bool occupyAllScreen;
 
   const PillButton({
     super.key,
@@ -12,12 +13,13 @@ class PillButton extends StatelessWidget {
     required this.onPressed,
     this.icon,
     this.primary = true,
+    this.occupyAllScreen = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: double.infinity,
+      width: occupyAllScreen ? double.infinity : null,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
@@ -31,8 +33,10 @@ class PillButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(text),
-            SizedBox(width: 8),
+            if(text.isNotEmpty) ...[
+              Text(text),
+              SizedBox(width: 8),
+            ],
             Icon(icon),
           ],
         ),
