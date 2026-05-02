@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:travel_together/auth/auth_service.dart';
+import 'package:travel_together/services/auth_service.dart';
 
 class AuthServiceTest implements AuthService {
   @override

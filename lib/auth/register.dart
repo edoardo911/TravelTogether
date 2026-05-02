@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:travel_together/auth/auth_service.dart';
+import 'package:travel_together/services/auth_service.dart';
 import 'package:travel_together/widgets/pill_button.dart';
 import 'package:travel_together/widgets/pill_input.dart';
 
@@ -38,7 +38,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     setState(() {
       _isLoading = true;
     });
-    final success = await _authController.register(_nameController.text, _emailController.text, _passwordController.text);
+    final success = await _authController.register(_nameController.text.trim(), _emailController.text.trim(), _passwordController.text);
     setState(() {
       _isLoading = false;
     });
@@ -92,6 +92,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   PillInput(
                     hint: "Email",
                     controller: _emailController,
+                    inputType: TextInputType.emailAddress,
                     validator: (value) {
                       if(value == null || value.isEmpty) {
                         return "Inserisci una mail";

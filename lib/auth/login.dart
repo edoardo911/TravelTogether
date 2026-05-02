@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:travel_together/auth/auth_service.dart';
+import 'package:travel_together/services/auth_service.dart';
 import 'package:travel_together/widgets/pill_button.dart';
 import 'package:travel_together/widgets/pill_input.dart';
 
@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = true;
     });
-    final logged = await _authController.login(_emailController.text, _passwordController.text);
+    final logged = await _authController.login(_emailController.text.trim(), _passwordController.text);
     setState(() {
       _isLoading = false;
     });
@@ -68,6 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   PillInput(
                     hint: "Email",
                     controller: _emailController,
+                    inputType: TextInputType.emailAddress,
                     validator: (value) {
                       if(value == null || value.isEmpty) {
                         return "Inserisci una mail";
