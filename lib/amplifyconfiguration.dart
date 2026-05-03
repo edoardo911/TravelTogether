@@ -9,6 +9,12 @@ const amplifyconfig = '''{
                     "endpoint": "https://2832pumcr4.execute-api.eu-north-1.amazonaws.com/dev",
                     "region": "eu-north-1",
                     "authorizationType": "AWS_IAM"
+                },
+                "events": {
+                    "endpointType": "REST",
+                    "endpoint": "https://bxvhic06se.execute-api.eu-north-1.amazonaws.com/dev",
+                    "region": "eu-north-1",
+                    "authorizationType": "AWS_IAM"
                 }
             }
         }
