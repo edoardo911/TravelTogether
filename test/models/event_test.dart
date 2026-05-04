@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:travel_together/models/event.dart';
 
@@ -10,6 +9,7 @@ void main() {
       "name": "test",
       "description": "test test test",
       "location": "santa monica",
+      "authorUUID": "123123",
       "maxParticipants": 9,
       "duration": "3 days",
       "date": date,
@@ -22,6 +22,7 @@ void main() {
     expect(event.name, "test");
     expect(event.description, "test test test");
     expect(event.location, "santa monica");
+    expect(event.authorUUID, "123123");
     expect(event.maxParticipants, 9);
     expect(event.duration, "3 days");
     expect(event.date, DateTime.parse(date));
@@ -36,6 +37,7 @@ void main() {
       name: "test",
       description: "test test test",
       location: "santa monica",
+      authorUUID: "123123",
       maxParticipants: 9,
       duration: "3 days",
       date: DateTime.parse(date),
@@ -46,6 +48,7 @@ void main() {
     expect(json["name"], "test");
     expect(json["description"], "test test test");
     expect(json["location"], "santa monica");
+    expect(json["authorUUID"], "123123");
     expect(json["maxParticipants"], 9);
     expect(json["duration"], "3 days");
     expect(json["date"], date);
@@ -58,6 +61,7 @@ void main() {
       name: "test",
       description: "test test test",
       location: "santa monica",
+      authorUUID: "123123",
       maxParticipants: 9,
       duration: "3 days",
       date: DateTime.parse(date),

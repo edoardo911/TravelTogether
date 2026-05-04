@@ -14,7 +14,7 @@
       "providerPlugin": "awscloudformation",
       "service": "API Gateway"
     },
-    "traveltogetherapi": {
+    "users": {
       "dependsOn": [
         {
           "attributes": [
@@ -30,7 +30,7 @@
     }
   },
   "auth": {
-    "traveltogetherd08ada37": {
+    "traveltogether8663370b": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {

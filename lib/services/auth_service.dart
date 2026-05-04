@@ -36,13 +36,10 @@ class AmplifyAuthService implements AuthService {
 
   @override
   Future<bool> confirm(String email, String name, String password, String code) async {
-    final result = await Amplify.Auth.confirmSignUp(
+    await Amplify.Auth.confirmSignUp(
         username: email,
         confirmationCode: code
     );
-    if(!result.isSignUpComplete) {
-      return false;
-    }
     await Amplify.Auth.signIn(
       username: email,
       password: password,
@@ -52,6 +49,7 @@ class AmplifyAuthService implements AuthService {
     try {
       final restOperation = Amplify.API.post(
         "/create",
+        apiName: "users",
         body: HttpPayload.json({
           "uuid": user.userId,
           "name": name,

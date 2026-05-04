@@ -2,18 +2,15 @@ const { create } = require("./routes/create");
 const { getUserById } = require("./routes/get_user_by_id");
 
 exports.handler = async (event) => {
-    const path = event.rawPath || event.path;
     const method = event.httpMethod;
+    const resource = event.resource;
 
     try {
-        //create user
-        if(path === "/create" && method === "POST") {
+        if(resource === "/create" && method === "POST") {
             return await create(event);
         }
-        //get user
-        if(path.startsWith("/user/") && method === "GET") {
-            const id = path.split("/")[2];
-            return await getUserById(event, id);
+        if(resource === "/users/{uuid}" && method === "GET") {
+            return await getUserById(event);
         }
 
         return {

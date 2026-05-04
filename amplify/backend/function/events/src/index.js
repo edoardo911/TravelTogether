@@ -1,21 +1,23 @@
-/* Amplify Params - DO NOT EDIT
-	ENV
-	REGION
-	MONGO_URI
-Amplify Params - DO NOT EDIT */
+const { getEventsByUUID } = require("./routes/get_events_by_uuid");
 
-/**
- * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
- */
 exports.handler = async (event) => {
-    console.log(`EVENT: ${JSON.stringify(event)}`);
-    return {
-        statusCode: 200,
-    //  Uncomment below to enable CORS requests
-    //  headers: {
-    //      "Access-Control-Allow-Origin": "*",
-    //      "Access-Control-Allow-Headers": "*"
-    //  },
-        body: JSON.stringify('Hello from Lambda!'),
-    };
+    const method = event.httpMethod;
+    const resource = event.resource;
+
+    try {
+        if(resource === "/events/{uuid}" && method === "GET") {
+            return await getEventsByUUID(event);
+        }
+
+        return {
+            statusCode: 404,
+            body: "Not found",
+        };
+    } catch(err) {
+        console.error(err);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: err.message }),
+        };
+    }
 };

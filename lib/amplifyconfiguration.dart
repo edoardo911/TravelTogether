@@ -4,15 +4,15 @@ const amplifyconfig = '''{
     "api": {
         "plugins": {
             "awsAPIPlugin": {
-                "traveltogetherapi": {
+                "users": {
                     "endpointType": "REST",
-                    "endpoint": "https://2832pumcr4.execute-api.eu-north-1.amazonaws.com/dev",
+                    "endpoint": "https://5zdpgkgts5.execute-api.eu-north-1.amazonaws.com/dev",
                     "region": "eu-north-1",
                     "authorizationType": "AWS_IAM"
                 },
                 "events": {
                     "endpointType": "REST",
-                    "endpoint": "https://bxvhic06se.execute-api.eu-north-1.amazonaws.com/dev",
+                    "endpoint": "https://xaydibg3jd.execute-api.eu-north-1.amazonaws.com/dev",
                     "region": "eu-north-1",
                     "authorizationType": "AWS_IAM"
                 }
@@ -30,15 +30,15 @@ const amplifyconfig = '''{
                 "CredentialsProvider": {
                     "CognitoIdentity": {
                         "Default": {
-                            "PoolId": "eu-north-1:3f58c6f9-bfc4-47d8-b260-165f2a7741af",
+                            "PoolId": "eu-north-1:e5794a0e-cebf-4b00-ae31-c93c89a7defc",
                             "Region": "eu-north-1"
                         }
                     }
                 },
                 "CognitoUserPool": {
                     "Default": {
-                        "PoolId": "eu-north-1_ljzJyVTfS",
-                        "AppClientId": "ef90cib2edfbasj99kpp8pqij",
+                        "PoolId": "eu-north-1_F89RjMqap",
+                        "AppClientId": "2n9lm76gfekkhvntkpfao91kj5",
                         "Region": "eu-north-1"
                     }
                 },

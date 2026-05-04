@@ -3,6 +3,7 @@ class Event {
   String name;
   String description;
   String location;
+  String authorUUID;
   int maxParticipants;
   String duration;
   DateTime date;
@@ -14,6 +15,7 @@ class Event {
     required this.name,
     required this.description,
     required this.location,
+    required this.authorUUID,
     required this.maxParticipants,
     required this.duration,
     required this.date,
@@ -27,6 +29,7 @@ class Event {
       name: json["name"],
       description: json["description"],
       location: json["location"],
+      authorUUID: json["authorUUID"],
       maxParticipants: json["maxParticipants"],
       duration: json["duration"],
       date: DateTime.parse(json["date"]),
@@ -40,6 +43,7 @@ class Event {
       "name": name,
       "description": description,
       "location": location,
+      "authorUUID": authorUUID,
       "maxParticipants": maxParticipants,
       "duration": duration,
       "date": date.toIso8601String(),
