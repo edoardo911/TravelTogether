@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travel_together/home/events/event_widget.dart';
 import 'package:travel_together/home/user/profile_info.dart';
 import 'package:travel_together/models/event.dart';
 import 'package:travel_together/models/user.dart';
@@ -118,7 +119,11 @@ class _UserPageState extends State<UserPage> {
             ],
           ],
         ),
-        //TODO: add event widgets
+        const SizedBox(height: 24),
+        ..._events.expand((e) => [
+          EventWidget(event: e, loggedIn: widget.isLogged),
+          const SizedBox(height: 16),
+        ]).toList()..removeLast(),
       ],
     ) : Center(child: CircularProgressIndicator());
   }

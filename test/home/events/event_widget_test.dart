@@ -1,0 +1,38 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:travel_together/home/events/event_widget.dart';
+import 'package:travel_together/models/event.dart';
+
+void main() {
+  testWidgets("test texts", (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: EventWidget(
+            event: Event.fromJson({
+              "id": "event0",
+              "name": "test",
+              "description": "test test test",
+              "location": "santa monica",
+              "authorUUID": "asd123",
+              "maxParticipants": 9,
+              "duration": "3 days",
+              "date": DateTime(2026).toIso8601String(),
+              "participants": [ "Mario", "Luigi" ],
+              "transportation": [ "Car", "Foot" ],
+            }),
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text("test"), findsOneWidget);
+    expect(find.text("1/1/2026 0:0, santa monica"), findsOneWidget);
+    expect(find.text("test test test"), findsOneWidget);
+    expect(find.text("Posti: 2/9"), findsOneWidget);
+    expect(find.text("Tratta: Car, Foot"), findsOneWidget);
+  });
+
+  //TODO: test on delete
+  //TODO: test on click
+}
