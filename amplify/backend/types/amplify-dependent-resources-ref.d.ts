@@ -1,13 +1,18 @@
 export type AmplifyDependentResourcesAttributes = {
   "api": {
-    "traveltogetherapi": {
+    "events": {
+      "ApiId": "string",
+      "ApiName": "string",
+      "RootUrl": "string"
+    },
+    "users": {
       "ApiId": "string",
       "ApiName": "string",
       "RootUrl": "string"
     }
   },
   "auth": {
-    "traveltogetherd08ada37": {
+    "traveltogether8663370b": {
       "AppClientID": "string",
       "AppClientIDWeb": "string",
       "IdentityPoolId": "string",
@@ -18,6 +23,13 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
+    "events": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "userService": {
       "Arn": "string",
       "LambdaExecutionRole": "string",

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:travel_together/home/user/profile_info.dart';
+import 'package:travel_together/models/event.dart';
 import 'package:travel_together/models/user.dart';
 import 'package:travel_together/services/auth_service.dart';
+import 'package:travel_together/services/event_service.dart';
 import 'package:travel_together/services/user_service.dart';
 import 'package:travel_together/widgets/pill_button.dart';
 
@@ -18,8 +20,24 @@ class UserPage extends StatefulWidget {
 class _UserPageState extends State<UserPage> {
   final _authController = AuthController(AmplifyAuthService());
   final _userController = UserController(AmplifyUserService());
+  final _eventController = EventController(AmplifyEventService());
+
   User? _user;
   bool _isLoading = false;
+  List<Event> _events = [];
+
+  Future<void> _loadData() async {
+    final user = await _userController.getUserById(widget.uuid);
+    if(user.uuid != "") {
+      final events = await _eventController.getEventsByAuthorUUID(user.uuid);
+
+      setState(() {
+        _isLoading = false;
+        _user = user;
+        _events = events;
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -28,15 +46,7 @@ class _UserPageState extends State<UserPage> {
     setState(() {
       _isLoading = true;
     });
-
-    _userController.getUserById(widget.uuid).then((userObject) => {
-      if(userObject.uuid.isNotEmpty) {
-        setState(() {
-          _user = userObject;
-          _isLoading = false;
-        })
-      }
-    });
+    _loadData();
   }
 
   @override
@@ -72,17 +82,17 @@ class _UserPageState extends State<UserPage> {
           children: [
             ProfileInfo(
               amount: 0, //TODO: dynamic parameter
-              label: "Following",
+              label: "Seguiti",
               action: () {}
             ),
             ProfileInfo(
                 amount: 0, //TODO: dynamic parameter
-                label: "Followers",
+                label: "Seguaci",
                 action: () {}
             ),
             ProfileInfo(
-                amount: 0, //TODO: dynamic parameter
-                label: "Events",
+                amount: _events.length,
+                label: "Viaggi",
                 action: () {}
             ),
           ],
@@ -91,7 +101,7 @@ class _UserPageState extends State<UserPage> {
         Row(
           children: [
             Text(
-              "Events",
+              "Viaggi",
               style: TextStyle(
                 fontSize: 30,
               ),
@@ -108,6 +118,7 @@ class _UserPageState extends State<UserPage> {
             ],
           ],
         ),
+        //TODO: add event widgets
       ],
     ) : Center(child: CircularProgressIndicator());
   }

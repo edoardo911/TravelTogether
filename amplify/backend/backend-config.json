@@ -1,6 +1,20 @@
 {
   "api": {
-    "traveltogetherapi": {
+    "events": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "events"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
+    "users": {
       "dependsOn": [
         {
           "attributes": [
@@ -16,7 +30,7 @@
     }
   },
   "auth": {
-    "traveltogetherd08ada37": {
+    "traveltogether8663370b": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -44,6 +58,12 @@
     }
   },
   "function": {
+    "events": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "userService": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -51,6 +71,30 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_events_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "events"
+        }
+      ]
+    },
+    "AMPLIFY_function_events_mongoUri": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "events"
+        }
+      ]
+    },
+    "AMPLIFY_function_events_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "events"
+        }
+      ]
+    },
     "AMPLIFY_function_userService_deploymentBucketName": {
       "usedBy": [
         {

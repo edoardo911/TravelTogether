@@ -1,16 +1,12 @@
-const { create } = require("./routes/create");
-const { getUserById } = require("./routes/get_user_by_id");
+const { getEventsByUUID } = require("./routes/get_events_by_uuid");
 
 exports.handler = async (event) => {
     const method = event.httpMethod;
     const resource = event.resource;
 
     try {
-        if(resource === "/create" && method === "POST") {
-            return await create(event);
-        }
-        if(resource === "/users/{uuid}" && method === "GET") {
-            return await getUserById(event);
+        if(resource === "/events/{uuid}" && method === "GET") {
+            return await getEventsByUUID(event);
         }
 
         return {

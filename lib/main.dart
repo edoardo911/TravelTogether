@@ -20,7 +20,7 @@ class TravelTogether extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/confirm',
+      initialRoute: '/',
       routes: {
         '/': (_) => SplashScreen(authController: AuthController(AmplifyAuthService())),
         '/home': (_) => HomeScreen(),
