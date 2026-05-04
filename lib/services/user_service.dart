@@ -13,7 +13,10 @@ class AmplifyUserService implements UserService {
   @override
   Future<Map<String, dynamic>> getUserById(String uuid) async {
     try {
-      final restOperation = Amplify.API.get("/user/$uuid");
+      final restOperation = Amplify.API.get(
+        "/users/$uuid",
+        apiName: "users",
+      );
       final response = await restOperation.response;
       final body = jsonDecode(response.decodeBody());
       if(response.statusCode == 200) {

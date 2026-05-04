@@ -31,7 +31,6 @@ class _ConfirmPageState extends State<ConfirmPage> {
     if(result && mounted) {
       Navigator.pushReplacementNamed(context, "/home");
     } else {
-      await _authController.register(args["name"], args["email"], args["password"]);
       Fluttertoast.showToast(
         msg: "Il codice non è corretto, riprova",
         gravity: ToastGravity.BOTTOM,

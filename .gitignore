@@ -49,7 +49,8 @@ amplify/#current-cloud-backend/
 amplify/.config/local-*
 amplify/backend/**/build/
 amplify/backend/**/dist/
-amplify/backend/**/node_modules/
+amplify/backend/**/node_modules
+amplify/backend/**/amplify-meta.json
 
 # AWS local credentials
 .aws/

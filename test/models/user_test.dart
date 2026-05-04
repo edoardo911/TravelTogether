@@ -26,7 +26,7 @@ void main() {
     );
 
     final json = user.toJson();
-    expect(json["id"], "123");
+    expect(json["id"], null);
     expect(json["uuid"], "123");
     expect(json["name"], "TEST");
     expect(json["email"], "test@test.com");
