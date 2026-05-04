@@ -10,6 +10,7 @@ e ha una pipeline di CI/CD che testa, compila l'APK e la rilascia automaticament
 
 - Flutter: UI/UX cross-platform (Android & iOS)
 - MongoDB: database non relazionale
-- AWS Lambda: serverless API REST
+- AWS Lambda: funzioni NodeJS serverless
+- AWS API: definizione di route e collegamento con lambda
 - AWS Cognito: autenticazione utenti
 - Amplify: connettore Flutter -> AWS
