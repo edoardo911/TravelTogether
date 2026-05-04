@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:travel_together/models/event.dart';
 import 'package:travel_together/models/user.dart';
+import 'package:travel_together/services/event_service.dart';
 import 'package:travel_together/services/user_service.dart';
 import 'package:travel_together/widgets/pill_button.dart';
 
 class EventWidget extends StatefulWidget {
   final Event event;
   final bool loggedIn;
+  final VoidCallback refresh;
 
   const EventWidget({
     super.key,
+    required this.refresh,
     required this.event,
     this.loggedIn = true,
   });
@@ -21,6 +25,7 @@ class EventWidget extends StatefulWidget {
 class _EventWidgetState extends State<EventWidget> {
   User? _user;
   final _userController = UserController(AmplifyUserService());
+  final _eventController = EventController(AmplifyEventService());
 
   @override
   void initState() {
@@ -67,11 +72,40 @@ class _EventWidgetState extends State<EventWidget> {
                   ),
                   if(widget.loggedIn) ...[
                     PillButton(
-                        text: "",
-                        icon: Icons.delete_outline,
-                        occupyAllScreen: false,
-                        primary: false,
-                        onPressed: () {} //TODO: remove event
+                      text: "",
+                      icon: Icons.delete_outline,
+                      occupyAllScreen: false,
+                      primary: false,
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text("Conferma Eliminazione"),
+                              content: const Text("Sei sicuro di voler eliminare questo viaggio?"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text("No"),
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    Fluttertoast.showToast(
+                                      msg: "Cancellato il viaggio ${widget.event.name}",
+                                      gravity: ToastGravity.BOTTOM,
+                                    );
+                                    if(await _eventController.removeEventByID(widget.event.id)) {
+                                      widget.refresh();
+                                    }
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text("Si"),
+                                ),
+                              ]
+                            );
+                          }
+                        );
+                      },
                     ),
                   ],
                 ],

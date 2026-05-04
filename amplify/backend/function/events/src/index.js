@@ -1,4 +1,5 @@
 const { getEventsByUUID } = require("./routes/get_events_by_uuid");
+const { removeEventByID } = require("./routes/remove_event_by_id");
 
 exports.handler = async (event) => {
     const method = event.httpMethod;
@@ -7,6 +8,9 @@ exports.handler = async (event) => {
     try {
         if(resource === "/events/{uuid}" && method === "GET") {
             return await getEventsByUUID(event);
+        }
+        if(resource === "/remove/{id}" && method === "DELETE") {
+            return await removeEventByID(event);
         }
 
         return {

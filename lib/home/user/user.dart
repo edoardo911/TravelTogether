@@ -28,6 +28,10 @@ class _UserPageState extends State<UserPage> {
   List<Event> _events = [];
 
   Future<void> _loadData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     final user = await _userController.getUserById(widget.uuid);
     if(user.uuid != "") {
       final events = await _eventController.getEventsByAuthorUUID(user.uuid);
@@ -35,6 +39,7 @@ class _UserPageState extends State<UserPage> {
       setState(() {
         _isLoading = false;
         _user = user;
+        _events.clear();
         _events = events;
       });
     }
@@ -43,10 +48,6 @@ class _UserPageState extends State<UserPage> {
   @override
   void initState() {
     super.initState();
-
-    setState(() {
-      _isLoading = true;
-    });
     _loadData();
   }
 
@@ -82,9 +83,9 @@ class _UserPageState extends State<UserPage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             ProfileInfo(
-              amount: 0, //TODO: dynamic parameter
-              label: "Seguiti",
-              action: () {}
+                amount: 0, //TODO: dynamic parameter
+                label: "Seguiti",
+                action: () {}
             ),
             ProfileInfo(
                 amount: 0, //TODO: dynamic parameter
@@ -121,7 +122,11 @@ class _UserPageState extends State<UserPage> {
         ),
         const SizedBox(height: 24),
         ..._events.expand((e) => [
-          EventWidget(event: e, loggedIn: widget.isLogged),
+          EventWidget(
+            refresh: () => _loadData(),
+            event: e,
+            loggedIn: widget.isLogged
+          ),
           const SizedBox(height: 16),
         ]).toList()..removeLast(),
       ],
