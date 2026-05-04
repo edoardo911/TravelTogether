@@ -35,6 +35,11 @@ class EventServiceTest implements EventService {
     }
     return [];
   }
+
+  @override
+  Future<bool> removeEventByID(String id) async {
+    return id == "event0" || id == "event1";
+  }
 }
 
 void main() {
@@ -60,5 +65,11 @@ void main() {
     final events = await controller.getEventsByAuthorUUID("123456");
 
     expect(events.length, 0);
+  });
+
+  test("test remove", () async {
+    final controller = EventController(EventServiceTest());
+    expect(await controller.removeEventByID("event1"), true);
+    expect(await controller.removeEventByID("event2"), false);
   });
 }

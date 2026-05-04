@@ -8,6 +8,7 @@ import 'package:travel_together/models/event.dart';
 //abstract class for testability
 abstract class EventService {
   Future<List<Event>> getEventsByAuthorUUID(String uuid);
+  Future<bool> removeEventByID(String id);
 }
 
 //amplify implementation
@@ -34,6 +35,28 @@ class AmplifyEventService implements EventService {
     }
     return [];
   }
+
+  @override
+  Future<bool> removeEventByID(String id) async {
+    try {
+      final restOperation = Amplify.API.delete(
+        "/remove/$id",
+        apiName: "events",
+      );
+      final response = await restOperation.response;
+      if(response.statusCode == 200) {
+        return true;
+      }
+    } on Exception catch(e) {
+      debugPrint("Exception: $e");
+      Fluttertoast.showToast(
+        msg: "Error deleting the event",
+        gravity: ToastGravity.BOTTOM,
+      );
+      return false;
+    }
+    return false;
+  }
 }
 
 //controller
@@ -44,5 +67,9 @@ class EventController {
 
   Future<List<Event>> getEventsByAuthorUUID(String uuid) async {
     return await eventService.getEventsByAuthorUUID(uuid);
+  }
+
+  Future<bool> removeEventByID(String id) async {
+    return await eventService.removeEventByID(id);
   }
 }
