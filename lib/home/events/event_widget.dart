@@ -56,7 +56,18 @@ class _EventWidgetState extends State<EventWidget> {
         ),
       ),
       child: InkWell(
-        onTap: () {}, //TODO: navigate to event page
+        onTap: () async {
+          final result = await Navigator.pushNamed(
+            context,
+            "/event",
+            arguments: {
+              "event": widget.event,
+            },
+          );
+          if(result == true) {
+            widget.refresh();
+          }
+        },
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 15, horizontal: 25),
           child: Column(

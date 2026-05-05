@@ -12,6 +12,10 @@ exports.handler = async (event) => {
         if(resource === "/remove/{id}" && method === "DELETE") {
             return await removeEventByID(event);
         }
+        if(resource === "/enroll/{uuid}" && method === "PUT") {
+        }
+        if(resource === "/dismiss/{uuid}" && method === "PUT") {
+        }
 
         return {
             statusCode: 404,

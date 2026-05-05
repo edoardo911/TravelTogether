@@ -1,5 +1,6 @@
 const { create } = require("./routes/create");
 const { getUserById } = require("./routes/get_user_by_id");
+const { getUsersByIDS } = require("./routes/get_users_by_ids");
 
 exports.handler = async (event) => {
     const method = event.httpMethod;
@@ -11,6 +12,9 @@ exports.handler = async (event) => {
         }
         if(resource === "/users/{uuid}" && method === "GET") {
             return await getUserById(event);
+        }
+        if(resource === "/group" && method === "PUT") {
+            return await getUsersByIDS(event);
         }
 
         return {
