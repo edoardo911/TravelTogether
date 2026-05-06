@@ -37,6 +37,7 @@ class _EventWidgetState extends State<EventWidget> {
 
   Future<void> _loadUser() async {
     final user = await _userController.getUserById(widget.event.authorUUID);
+    debugPrint(user.uuid);
     if(user.uuid != "") {
       setState(() {
         _user = user;
@@ -121,7 +122,9 @@ class _EventWidgetState extends State<EventWidget> {
                   ],
                 ],
               ),
-              Text("Creato da: ${_user?.name ?? ''}"),
+              if(!widget.loggedIn) ...[
+                Text("Creato da: ${_user?.name ?? ''}"),
+              ],
               Divider(),
               const SizedBox(height: 6),
               Text(

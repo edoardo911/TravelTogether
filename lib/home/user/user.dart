@@ -115,7 +115,13 @@ class _UserPageState extends State<UserPage> {
                 primary: false,
                 occupyAllScreen: false,
                 icon: Icons.add,
-                onPressed: () {},
+                onPressed: () => Navigator.pushNamed(
+                  context,
+                  "/event_edit",
+                  arguments: {
+                    "event": null,
+                  },
+                ),
               ),
             ],
           ],
