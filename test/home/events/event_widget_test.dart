@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:travel_together/home/events/event.dart';
 import 'package:travel_together/home/events/event_widget.dart';
 import 'package:travel_together/models/event.dart';
 import 'package:travel_together/widgets/pill_button.dart';
@@ -64,6 +65,4 @@ void main() {
     expect(find.text("Sei sicuro di voler eliminare questo viaggio?"), findsOneWidget);
     expect(find.byType(TextButton), findsNWidgets(2));
   });
-
-  //TODO: test on click
 }

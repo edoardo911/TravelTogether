@@ -53,7 +53,7 @@ class _UserPageState extends State<UserPage> {
 
   @override
   Widget build(BuildContext context) {
-    return !_isLoading ? Column(
+    return !_isLoading ? ListView(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

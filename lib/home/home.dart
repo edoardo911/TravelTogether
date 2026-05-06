@@ -29,9 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 50, horizontal: 16),
-        child: SingleChildScrollView(
-          child: _buildPage(_index),
-        ),
+        child: _buildPage(_index),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _index,
