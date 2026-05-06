@@ -23,9 +23,9 @@ class UserServiceTest implements UserService {
   }
 
   @override
-  Future<List<User>> getUsersByIDs(List<String> uuids) async {
+  Future<List<User>> getUsersByIDs(List<String> ids) async {
     List<User> result = [];
-    uuids.forEach((uuid) async {
+    ids.forEach((uuid) async {
       if(uuid == "asd123") {
         result.add(User.fromJson({
           "id": "asd123",

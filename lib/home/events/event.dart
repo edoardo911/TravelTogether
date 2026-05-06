@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:travel_together/models/event.dart';
 import 'package:travel_together/models/user.dart';
 import 'package:travel_together/services/event_service.dart';
@@ -19,7 +20,9 @@ class _EventPageState extends State<EventPage> {
   final _eventController = EventController(AmplifyEventService());
   bool _isMine = true;
   bool _free = false;
+  bool _participating = false;
   bool _loadingParticipants = false;
+  bool _loadingEnrollment = false;
   List<User> _participants = [];
   User? _author;
 
@@ -30,6 +33,7 @@ class _EventPageState extends State<EventPage> {
       setState(() {
         _author = user;
         _isMine = user.uuid == myUUID;
+        _participating = widget.event.participants.contains(user.id);
         _free = widget.event.participants.length < widget.event.maxParticipants;
       });
     }
@@ -43,6 +47,42 @@ class _EventPageState extends State<EventPage> {
     setState(() {
       _loadingParticipants = false;
       _participants = users;
+    });
+  }
+
+  Future<void> _enrollDismiss() async {
+    setState(() {
+      _loadingEnrollment = true;
+    });
+    if(_participating) {
+      if(await _eventController.dismiss(widget.event.id, _author!.id)) {
+        setState(() {
+          _participating = false;
+          _participants.remove(_author);
+          widget.event.participants.remove(_author!.id);
+        });
+      } else {
+        Fluttertoast.showToast(
+          msg: "Error dismissing event",
+          gravity: ToastGravity.BOTTOM,
+        );
+      }
+    } else {
+      if(await _eventController.enroll(widget.event.id, _author!.id)) {
+        setState(() {
+          _participating = true;
+          _participants.add(_author!);
+          widget.event.participants.add(_author!.id);
+        });
+      } else {
+        Fluttertoast.showToast(
+          msg: "Error enrolling event",
+          gravity: ToastGravity.BOTTOM,
+        );
+      }
+    }
+    setState(() {
+      _loadingEnrollment = false;
     });
   }
 
@@ -156,7 +196,19 @@ class _EventPageState extends State<EventPage> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return Text(_participants[index].name);
+                    return SelectableText(
+                      _participants[index].name,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 24),
+                      onTap: () => Navigator.pushNamed(
+                        context,
+                        "/user",
+                        arguments: {
+                          "uuid": _participants[index].uuid,
+                          "logged": false,
+                        }
+                      ),
+                    );
                   },
                   separatorBuilder: (context, index) {
                     return SizedBox(height: 12);
@@ -165,11 +217,11 @@ class _EventPageState extends State<EventPage> {
                 ),
                 if(_free) ...[
                   const SizedBox(height: 12),
-                  PillButton(
-                      text: "Partecipa",
-                      icon: Icons.confirmation_num_outlined,
-                      onPressed: () {} //TODO: participate
-                  ),
+                  !_loadingEnrollment ? PillButton(
+                    text: _participating ? "Non Partecipare" : "Partecipa",
+                    icon: _participating ? Icons.cancel_outlined : Icons.confirmation_num_outlined,
+                    onPressed: () => _enrollDismiss(),
+                  ) : CircularProgressIndicator(),
                 ],
                 const SizedBox(height: 12),
               ],
@@ -206,7 +258,7 @@ class _EventPageState extends State<EventPage> {
                 text: "Modifica",
                 icon: Icons.edit,
                 primary: false,
-                onPressed: () {} //TODO: edit
+                onPressed: () {}, //TODO: edit
               ),
               PillButton(
                 text: "Cancella",
@@ -215,9 +267,9 @@ class _EventPageState extends State<EventPage> {
                 onPressed: () async {
                   await _eventController.removeEventByID(widget.event.id);
                   Navigator.pop(context, true);
-                }
+                },
               ),
-            ]
+            ],
           ],
         ),
       ),

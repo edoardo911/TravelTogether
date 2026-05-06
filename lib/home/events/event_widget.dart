@@ -121,9 +121,7 @@ class _EventWidgetState extends State<EventWidget> {
                   ],
                 ],
               ),
-              if(_user != null) ...[
-                Text("Creato da: ${_user!.name}"),
-              ],
+              Text("Creato da: ${_user?.name ?? ''}"),
               Divider(),
               const SizedBox(height: 6),
               Text(

@@ -1,5 +1,7 @@
 const { getEventsByUUID } = require("./routes/get_events_by_uuid");
 const { removeEventByID } = require("./routes/remove_event_by_id");
+const { enroll } = require("./routes/enroll");
+const { dismiss } = require("./routes/dismiss");
 
 exports.handler = async (event) => {
     const method = event.httpMethod;
@@ -12,9 +14,11 @@ exports.handler = async (event) => {
         if(resource === "/remove/{id}" && method === "DELETE") {
             return await removeEventByID(event);
         }
-        if(resource === "/enroll/{uuid}" && method === "PUT") {
+        if(resource === "/enroll/{id}" && method === "PUT") {
+            return await enroll(event);
         }
-        if(resource === "/dismiss/{uuid}" && method === "PUT") {
+        if(resource === "/dismiss/{id}" && method === "PUT") {
+            return await dismiss(event);
         }
 
         return {

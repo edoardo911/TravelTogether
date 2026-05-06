@@ -7,7 +7,7 @@ import 'package:travel_together/models/user.dart';
 
 abstract class UserService {
   Future<Map<String, dynamic>> getUserById(String uuid);
-  Future<List<User>> getUsersByIDs(List<String> uuids);
+  Future<List<User>> getUsersByIDs(List<String> ids);
   Future<String> getCurrentUserUUID();
 }
 
@@ -32,17 +32,16 @@ class AmplifyUserService implements UserService {
   }
 
   @override
-  Future<List<User>> getUsersByIDs(List<String> uuids) async {
+  Future<List<User>> getUsersByIDs(List<String> ids) async {
     try {
       final restOperation = Amplify.API.put(
         "/group",
         apiName: "users",
         body: HttpPayload.json({
-          "uuids": uuids,
+          "ids": ids,
         }),
       );
       final response = await restOperation.response;
-      final body = jsonDecode(response.decodeBody());
       if(response.statusCode == 200) {
         final rawData = jsonDecode(response.decodeBody())["users"];
         return List<User>.from(rawData.map((json) => User.fromJson(json)));
@@ -77,8 +76,8 @@ class UserController {
     return User.fromJson(json);
   }
 
-  Future<List<User>> getUsersByIDs(List<String> uuids) async {
-    return await userService.getUsersByIDs(uuids);
+  Future<List<User>> getUsersByIDs(List<String> ids) async {
+    return await userService.getUsersByIDs(ids);
   }
 
   Future<String> getCurrentUserUUID() async {
