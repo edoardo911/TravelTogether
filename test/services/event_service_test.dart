@@ -40,6 +40,16 @@ class EventServiceTest implements EventService {
   Future<bool> removeEventByID(String id) async {
     return id == "event0" || id == "event1";
   }
+
+  @override
+  Future<bool> enroll(String eventId, String id) async {
+    return id == "asd123";
+  }
+
+  @override
+  Future<bool> dismiss(String eventId, String id) async {
+    return id == "asd456";
+  }
 }
 
 void main() {
@@ -71,5 +81,17 @@ void main() {
     final controller = EventController(EventServiceTest());
     expect(await controller.removeEventByID("event1"), true);
     expect(await controller.removeEventByID("event2"), false);
+  });
+
+  test("test enroll", () async {
+    final controller = EventController(EventServiceTest());
+    expect(await controller.enroll("", "asd123"), true);
+    expect(await controller.enroll("", "asd456"), false);
+  });
+
+  test("test dismiss", () async {
+    final controller = EventController(EventServiceTest());
+    expect(await controller.dismiss("", "asd123"), false);
+    expect(await controller.dismiss("", "asd456"), true);
   });
 }

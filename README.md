@@ -14,3 +14,4 @@ e ha una pipeline di CI/CD che testa, compila l'APK e la rilascia automaticament
 - AWS API: definizione di route e collegamento con lambda
 - AWS Cognito: autenticazione utenti
 - Amplify: connettore Flutter -> AWS
+- GitFlow: gestione dei branch github ´production/development´ e ´feature-<nome_feature>´
