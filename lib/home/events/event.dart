@@ -285,6 +285,7 @@ class _EventPageState extends State<EventPage> {
                             msg: "Cancellato il viaggio ${widget.event.name}",
                             gravity: ToastGravity.BOTTOM,
                           );
+                          Navigator.pop(context);
                           Navigator.pop(context, true);
                         } else {
                           Fluttertoast.showToast(

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:travel_together/models/event.dart';
+import 'package:travel_together/services/event_service.dart';
+import 'package:travel_together/services/user_service.dart';
 import 'package:travel_together/widgets/pill_button.dart';
 
 class EventEditPage extends StatefulWidget {
@@ -13,7 +16,10 @@ class EventEditPage extends StatefulWidget {
 }
 
 class _EventEditPageState extends State<EventEditPage> {
+  final _eventController = EventController(AmplifyEventService());
+  final _userController = UserController(AmplifyUserService());
   final _formKey = GlobalKey<FormState>();
+
   final _nameController = TextEditingController();
   final _descController = TextEditingController();
   final _locationController = TextEditingController();
@@ -23,6 +29,7 @@ class _EventEditPageState extends State<EventEditPage> {
   final _transportController = TextEditingController();
   List<String> _transport = [];
   bool _meToo = true;
+  bool _loading = false;
 
   @override
   void initState() {
@@ -70,16 +77,73 @@ class _EventEditPageState extends State<EventEditPage> {
     }
   }
 
+  Future<void> _confirm() async {
+    setState(() {
+      _loading = true;
+    });
+
+    if(!_formKey.currentState!.validate()) return;
+    if(widget.event == null) {
+      //create
+      final myUUID = await _userController.getCurrentUserUUID();
+      final me = await _userController.getUserById(myUUID);
+      final event = Event.fromJson({
+        "name": _nameController.text,
+        "description": _descController.text,
+        "location": _locationController.text,
+        "authorUUID": myUUID,
+        "maxParticipants": int.parse(_participantsController.text),
+        "duration": _durationController.text,
+        "date": DateFormat("dd/MM/yyyy HH:mm").parse(_dateController.text).toIso8601String(),
+        "participants": _meToo ? [ me.id ] : [],
+        "transportation": _transport,
+      });
+
+      final result = await _eventController.create(event);
+      if(result) {
+        Navigator.pop(context, true);
+      } else {
+        Fluttertoast.showToast(
+          msg: "Error creating event",
+          gravity: ToastGravity.BOTTOM,
+        );
+      }
+    } else {
+      //update
+      widget.event!.name = _nameController.text;
+      widget.event!.description = _descController.text;
+      widget.event!.location = _locationController.text;
+      widget.event!.duration = _durationController.text;
+      widget.event!.date = DateFormat("dd/MM/yyyy HH:mm").parse(_dateController.text);
+      widget.event!.transportation = _transport;
+
+      final result = await _eventController.update(widget.event!);
+      if(result) {
+        Navigator.pop(context);
+        Navigator.pop(context, true);
+      } else {
+        Fluttertoast.showToast(
+          msg: "Error updating event",
+          gravity: ToastGravity.BOTTOM,
+        );
+      }
+    }
+
+    setState(() {
+      _loading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: !_loading ? AppBar(
         title: Text(widget.event == null ? "Crea Viaggio" : "Modifica Viaggio"),
         automaticallyImplyLeading: true,
-      ),
+      ) : null,
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-        child: Form(
+        child: !_loading ? Form(
           key: _formKey,
           child: SingleChildScrollView(
             child: Column(
@@ -88,10 +152,10 @@ class _EventEditPageState extends State<EventEditPage> {
                 TextFormField(
                   controller: _nameController,
                   validator: (value) {
-                    if(value == "") {
+                    if(value == null || value.isEmpty) {
                       return "Inserisci un nome";
                     }
-                    return "";
+                    return null;
                   },
                   decoration: InputDecoration(
                     labelText: "Nome",
@@ -104,10 +168,10 @@ class _EventEditPageState extends State<EventEditPage> {
                   minLines: 1,
                   maxLines: 3,
                   validator: (value) {
-                    if(value == "") {
+                    if(value == null || value.isEmpty) {
                       return "Inserisci una descrizione";
                     }
-                    return "";
+                    return null;
                   },
                   decoration: InputDecoration(
                     labelText: "Descizione",
@@ -117,10 +181,10 @@ class _EventEditPageState extends State<EventEditPage> {
                 TextFormField(
                   controller: _locationController,
                   validator: (value) {
-                    if(value == "") {
+                    if(value == null || value.isEmpty) {
                       return "Inserisci un luogo";
                     }
-                    return "";
+                    return null;
                   },
                   decoration: InputDecoration(
                     labelText: "Luogo",
@@ -130,10 +194,10 @@ class _EventEditPageState extends State<EventEditPage> {
                 TextFormField(
                   controller: _durationController,
                   validator: (value) {
-                    if(value == "") {
+                    if(value == null || value.isEmpty) {
                       return "Inserisci una durata";
                     }
-                    return "";
+                    return null;
                   },
                   decoration: InputDecoration(
                     labelText: "Durata",
@@ -155,10 +219,10 @@ class _EventEditPageState extends State<EventEditPage> {
                     keyboardType: TextInputType.number,
                     controller: _participantsController,
                     validator: (value) {
-                      if(value == "") {
+                      if(value == null || value.isEmpty) {
                         return "Inserisci un numero massimo di partecipanti";
                       }
-                      return "";
+                      return null;
                     },
                     decoration: InputDecoration(
                       labelText: "Partecipanti",
@@ -166,13 +230,13 @@ class _EventEditPageState extends State<EventEditPage> {
                   ),
                   const SizedBox(height: 12),
                   CheckboxListTile(
-                      title: const Text("Partecipa anche l'autore?"),
-                      value: _meToo,
-                      onChanged: (bool? newValue) {
-                        setState(() {
-                          _meToo = newValue ?? false;
-                        });
-                      }
+                    title: const Text("Partecipi anche tu?"),
+                    value: _meToo,
+                    onChanged: (bool? newValue) {
+                      setState(() {
+                        _meToo = newValue ?? false;
+                      });
+                    }
                   ),
                 ],
                 const SizedBox(height: 12),
@@ -207,15 +271,15 @@ class _EventEditPageState extends State<EventEditPage> {
                 ),
                 const SizedBox(height: 12),
                 PillButton(
-                  text: "Salva",
+                  text: widget.event == null ? "Crea" : "Salva",
                   primary: false,
-                  icon: Icons.save,
-                  onPressed: () {} //TODO: edit/create
+                  icon: widget.event == null ? Icons.add : Icons.save,
+                  onPressed: () => _confirm(),
                 ),
               ],
             ),
           ),
-        )
+        ) : Center(child: CircularProgressIndicator()),
       ),
     );
   }
