@@ -35,6 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
         currentIndex: _index,
         showSelectedLabels: false,
         showUnselectedLabels: false,
+        selectedItemColor: Theme.of(context).colorScheme.primary,
+        type: BottomNavigationBarType.fixed,
         onTap: (i) {
           setState(() {
             _index = i;

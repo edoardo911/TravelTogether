@@ -9,8 +9,12 @@ import 'package:travel_together/models/event.dart';
 abstract class EventService {
   Future<List<Event>> getEventsByAuthorUUID(String uuid);
   Future<bool> removeEventByID(String id);
+
   Future<bool> enroll(String eventId, String id);
   Future<bool> dismiss(String eventId, String id);
+
+  Future<bool> update(Event event);
+  Future<bool> create(Event event);
 }
 
 //amplify implementation
@@ -101,6 +105,44 @@ class AmplifyEventService implements EventService {
     }
     return false;
   }
+
+  @override
+  Future<bool> update(Event event) async {
+    try {
+      final restOperation = Amplify.API.put(
+        "/update/${event.id}",
+        apiName: "events",
+        body: HttpPayload.json(event.toJson()),
+      );
+      final response = await restOperation.response;
+      if(response.statusCode == 200) {
+        return true;
+      }
+    } on Exception catch(e) {
+      debugPrint("$e");
+      return false;
+    }
+    return false;
+  }
+
+  @override
+  Future<bool> create(Event event) async {
+    try {
+      final restOperation = Amplify.API.post(
+        "/create",
+        apiName: "events",
+        body: HttpPayload.json(event.toJson()),
+      );
+      final response = await restOperation.response;
+      if(response.statusCode == 200) {
+        return true;
+      }
+    } on Exception catch(e) {
+      debugPrint("$e");
+      return false;
+    }
+    return false;
+  }
 }
 
 //controller
@@ -123,5 +165,13 @@ class EventController {
 
   Future<bool> dismiss(String eventId, String id) async {
     return await eventService.dismiss(eventId, id);
+  }
+
+  Future<bool> update(Event event) async {
+    return await eventService.update(event);
+  }
+
+  Future<bool> create(Event event) async {
+    return await eventService.create(event);
   }
 }

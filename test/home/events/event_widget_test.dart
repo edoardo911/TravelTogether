@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:travel_together/home/events/event.dart';
 import 'package:travel_together/home/events/event_widget.dart';
 import 'package:travel_together/models/event.dart';
-import 'package:travel_together/widgets/pill_button.dart';
+import 'package:travel_together/widgets/icon_button_pill.dart';
 
 void main() {
   testWidgets("test texts", (tester) async {
@@ -30,7 +29,7 @@ void main() {
     );
 
     expect(find.text("test"), findsOneWidget);
-    expect(find.text("1/1/2026 0:0, santa monica"), findsOneWidget);
+    expect(find.text("01/01/2026 00:00, santa monica"), findsOneWidget);
     expect(find.text("test test test"), findsOneWidget);
     expect(find.text("Posti: 2/9"), findsOneWidget);
     expect(find.text("Tratta: Car, Foot"), findsOneWidget);
@@ -59,7 +58,7 @@ void main() {
       ),
     );
 
-    await tester.tap(find.byType(PillButton));
+    await tester.tap(find.byType(IconButtonPill));
     await tester.pump();
 
     expect(find.text("Sei sicuro di voler eliminare questo viaggio?"), findsOneWidget);
