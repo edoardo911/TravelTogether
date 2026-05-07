@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:travel_together/models/event.dart';
 import 'package:travel_together/models/user.dart';
 import 'package:travel_together/services/event_service.dart';
@@ -136,7 +137,7 @@ class _EventPageState extends State<EventPage> {
                 const Icon(Icons.date_range),
                 const SizedBox(width: 6),
                 Text(
-                  "${widget.event.date.day}/${widget.event.date.month}/${widget.event.date.year} ${widget.event.date.hour}:${widget.event.date.minute}",
+                  DateFormat('dd/MM/yyyy HH:mm').format(widget.event.date),
                   style: TextStyle(fontSize: 18),
                 ),
               ],

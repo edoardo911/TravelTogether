@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:travel_together/models/event.dart';
 import 'package:travel_together/models/user.dart';
 import 'package:travel_together/services/event_service.dart';
@@ -128,7 +129,7 @@ class _EventWidgetState extends State<EventWidget> {
               Divider(),
               const SizedBox(height: 6),
               Text(
-                "${widget.event.date.day}/${widget.event.date.month}/${widget.event.date.year} ${widget.event.date.hour}:${widget.event.date.minute}, ${widget.event.location}",
+                "${DateFormat('dd/MM/yyyy HH:mm').format(widget.event.date)}, ${widget.event.location}",
                 style: TextStyle(
                   fontWeight: FontWeight(800),
                 ),
