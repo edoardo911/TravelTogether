@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:travel_together/home/events/delete_alert.dart';
 import 'package:travel_together/models/event.dart';
 import 'package:travel_together/models/user.dart';
 import 'package:travel_together/services/event_service.dart';
@@ -89,36 +90,28 @@ class _EventWidgetState extends State<EventWidget> {
                       icon: Icons.delete_outline,
                       occupyAllScreen: false,
                       primary: false,
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text("Conferma Eliminazione"),
-                              content: const Text("Sei sicuro di voler eliminare questo viaggio?"),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: const Text("No"),
-                                ),
-                                TextButton(
-                                  onPressed: () async {
-                                    Fluttertoast.showToast(
-                                      msg: "Cancellato il viaggio ${widget.event.name}",
-                                      gravity: ToastGravity.BOTTOM,
-                                    );
-                                    if(await _eventController.removeEventByID(widget.event.id)) {
-                                      widget.refresh();
-                                    }
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text("Si"),
-                                ),
-                              ]
-                            );
-                          }
-                        );
-                      },
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return DeleteAlert(
+                            action: () async {
+                              if(await _eventController.removeEventByID(widget.event.id)) {
+                                Fluttertoast.showToast(
+                                  msg: "Cancellato il viaggio ${widget.event.name}",
+                                  gravity: ToastGravity.BOTTOM,
+                                );
+                                widget.refresh();
+                                Navigator.pop(context);
+                              } else {
+                                Fluttertoast.showToast(
+                                  msg: "Errore nella cancellazione del viaggio",
+                                  gravity: ToastGravity.BOTTOM,
+                                );
+                              }
+                            },
+                          );
+                        }
+                      ),
                     ),
                   ],
                 ],

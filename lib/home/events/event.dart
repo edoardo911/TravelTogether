@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:travel_together/home/events/delete_alert.dart';
 import 'package:travel_together/models/event.dart';
 import 'package:travel_together/models/user.dart';
 import 'package:travel_together/services/event_service.dart';
@@ -274,10 +275,27 @@ class _EventPageState extends State<EventPage> {
                 text: "Cancella",
                 icon: Icons.remove,
                 primary: false,
-                onPressed: () async {
-                  await _eventController.removeEventByID(widget.event.id); //TODO: dialog
-                  Navigator.pop(context, true);
-                },
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return DeleteAlert(
+                      action: () async {
+                        if(await _eventController.removeEventByID(widget.event.id)) {
+                          Fluttertoast.showToast(
+                            msg: "Cancellato il viaggio ${widget.event.name}",
+                            gravity: ToastGravity.BOTTOM,
+                          );
+                          Navigator.pop(context, true);
+                        } else {
+                          Fluttertoast.showToast(
+                            msg: "Errore nella cancellazione del viaggio",
+                            gravity: ToastGravity.BOTTOM,
+                          );
+                        }
+                      },
+                    );
+                  }
+                ),
               ),
             ],
           ],
