@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
+import 'package:travel_together/home/events/delete_alert.dart';
 import 'package:travel_together/models/event.dart';
 import 'package:travel_together/models/user.dart';
 import 'package:travel_together/services/event_service.dart';
@@ -25,13 +27,16 @@ class _EventPageState extends State<EventPage> {
   bool _loadingEnrollment = false;
   List<User> _participants = [];
   User? _author;
+  User? _me;
 
   Future<void> _loadAuthor() async {
     final user = await _userController.getUserById(widget.event.authorUUID);
     final myUUID = await _userController.getCurrentUserUUID();
+    final me = await _userController.getUserById(myUUID);
     if(user.uuid != "") {
       setState(() {
         _author = user;
+        _me = me;
         _isMine = user.uuid == myUUID;
         _participating = widget.event.participants.contains(user.id);
         _free = widget.event.participants.length < widget.event.maxParticipants;
@@ -55,11 +60,11 @@ class _EventPageState extends State<EventPage> {
       _loadingEnrollment = true;
     });
     if(_participating) {
-      if(await _eventController.dismiss(widget.event.id, _author!.id)) {
+      if(await _eventController.dismiss(widget.event.id, _me!.id)) {
         setState(() {
           _participating = false;
-          _participants.remove(_author);
-          widget.event.participants.remove(_author!.id);
+          _participants.remove(_me!);
+          widget.event.participants.remove(_me!.id);
         });
       } else {
         Fluttertoast.showToast(
@@ -68,11 +73,11 @@ class _EventPageState extends State<EventPage> {
         );
       }
     } else {
-      if(await _eventController.enroll(widget.event.id, _author!.id)) {
+      if(await _eventController.enroll(widget.event.id, _me!.id)) {
         setState(() {
           _participating = true;
-          _participants.add(_author!);
-          widget.event.participants.add(_author!.id);
+          _participants.add(_me!);
+          widget.event.participants.add(_me!.id);
         });
       } else {
         Fluttertoast.showToast(
@@ -133,7 +138,7 @@ class _EventPageState extends State<EventPage> {
                 const Icon(Icons.date_range),
                 const SizedBox(width: 6),
                 Text(
-                  "${widget.event.date.day}/${widget.event.date.month}/${widget.event.date.year} ${widget.event.date.hour}:${widget.event.date.minute}",
+                  DateFormat('dd/MM/yyyy HH:mm').format(widget.event.date),
                   style: TextStyle(fontSize: 18),
                 ),
               ],
@@ -215,7 +220,7 @@ class _EventPageState extends State<EventPage> {
                   },
                   itemCount: _participants.length,
                 ),
-                if(_free) ...[
+                if(_free && _me != null) ...[
                   const SizedBox(height: 12),
                   !_loadingEnrollment ? PillButton(
                     text: _participating ? "Non Partecipare" : "Partecipa",
@@ -258,16 +263,40 @@ class _EventPageState extends State<EventPage> {
                 text: "Modifica",
                 icon: Icons.edit,
                 primary: false,
-                onPressed: () {}, //TODO: edit
+                onPressed: () => Navigator.pushNamed(
+                  context,
+                  "/event_edit",
+                  arguments: {
+                    "event": widget.event,
+                  },
+                ),
               ),
               PillButton(
                 text: "Cancella",
                 icon: Icons.remove,
                 primary: false,
-                onPressed: () async {
-                  await _eventController.removeEventByID(widget.event.id);
-                  Navigator.pop(context, true);
-                },
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return DeleteAlert(
+                      action: () async {
+                        if(await _eventController.removeEventByID(widget.event.id)) {
+                          Fluttertoast.showToast(
+                            msg: "Cancellato il viaggio ${widget.event.name}",
+                            gravity: ToastGravity.BOTTOM,
+                          );
+                          Navigator.pop(context);
+                          Navigator.pop(context, true);
+                        } else {
+                          Fluttertoast.showToast(
+                            msg: "Errore nella cancellazione del viaggio",
+                            gravity: ToastGravity.BOTTOM,
+                          );
+                        }
+                      },
+                    );
+                  }
+                ),
               ),
             ],
           ],

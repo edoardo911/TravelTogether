@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
+import 'package:travel_together/home/events/delete_alert.dart';
 import 'package:travel_together/models/event.dart';
 import 'package:travel_together/models/user.dart';
 import 'package:travel_together/services/event_service.dart';
@@ -37,6 +39,7 @@ class _EventWidgetState extends State<EventWidget> {
 
   Future<void> _loadUser() async {
     final user = await _userController.getUserById(widget.event.authorUUID);
+    debugPrint(user.uuid);
     if(user.uuid != "") {
       setState(() {
         _user = user;
@@ -87,45 +90,39 @@ class _EventWidgetState extends State<EventWidget> {
                       icon: Icons.delete_outline,
                       occupyAllScreen: false,
                       primary: false,
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text("Conferma Eliminazione"),
-                              content: const Text("Sei sicuro di voler eliminare questo viaggio?"),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: const Text("No"),
-                                ),
-                                TextButton(
-                                  onPressed: () async {
-                                    Fluttertoast.showToast(
-                                      msg: "Cancellato il viaggio ${widget.event.name}",
-                                      gravity: ToastGravity.BOTTOM,
-                                    );
-                                    if(await _eventController.removeEventByID(widget.event.id)) {
-                                      widget.refresh();
-                                    }
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text("Si"),
-                                ),
-                              ]
-                            );
-                          }
-                        );
-                      },
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return DeleteAlert(
+                            action: () async {
+                              if(await _eventController.removeEventByID(widget.event.id)) {
+                                Fluttertoast.showToast(
+                                  msg: "Cancellato il viaggio ${widget.event.name}",
+                                  gravity: ToastGravity.BOTTOM,
+                                );
+                                widget.refresh();
+                                Navigator.pop(context);
+                              } else {
+                                Fluttertoast.showToast(
+                                  msg: "Errore nella cancellazione del viaggio",
+                                  gravity: ToastGravity.BOTTOM,
+                                );
+                              }
+                            },
+                          );
+                        }
+                      ),
                     ),
                   ],
                 ],
               ),
-              Text("Creato da: ${_user?.name ?? ''}"),
+              if(!widget.loggedIn) ...[
+                Text("Creato da: ${_user?.name ?? ''}"),
+              ],
               Divider(),
               const SizedBox(height: 6),
               Text(
-                "${widget.event.date.day}/${widget.event.date.month}/${widget.event.date.year} ${widget.event.date.hour}:${widget.event.date.minute}, ${widget.event.location}",
+                "${DateFormat('dd/MM/yyyy HH:mm').format(widget.event.date)}, ${widget.event.location}",
                 style: TextStyle(
                   fontWeight: FontWeight(800),
                 ),

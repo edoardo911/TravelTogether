@@ -50,6 +50,16 @@ class EventServiceTest implements EventService {
   Future<bool> dismiss(String eventId, String id) async {
     return id == "asd456";
   }
+
+  @override
+  Future<bool> update(Event event) async {
+    return event.id == "event0";
+  }
+
+  @override
+  Future<bool> create(Event event) async {
+    return event.id == "event1";
+  }
 }
 
 void main() {
@@ -93,5 +103,39 @@ void main() {
     final controller = EventController(EventServiceTest());
     expect(await controller.dismiss("", "asd123"), false);
     expect(await controller.dismiss("", "asd456"), true);
+  });
+
+  test("test update", () async {
+    final controller = EventController(EventServiceTest());
+    final result = await controller.update(Event.fromJson({
+      "id": "event0",
+      "name": "test",
+      "description": "test test test",
+      "location": "santa monica",
+      "authorUUID": "asd123",
+      "maxParticipants": 9,
+      "duration": "3 days",
+      "date": DateTime(2026).toIso8601String(),
+      "participants": [ "Mario", "Luigi" ],
+      "transportation": [ "Car" ],
+    }));
+    expect(result, true);
+  });
+
+  test("test create", () async {
+    final controller = EventController(EventServiceTest());
+    final result = await controller.create(Event.fromJson({
+      "id": "event0",
+      "name": "test",
+      "description": "test test test",
+      "location": "santa monica",
+      "authorUUID": "asd123",
+      "maxParticipants": 9,
+      "duration": "3 days",
+      "date": DateTime(2026).toIso8601String(),
+      "participants": [ "Mario", "Luigi" ],
+      "transportation": [ "Car" ],
+    }));
+    expect(result, false);
   });
 }
