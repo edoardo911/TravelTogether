@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:travel_together/home/events/event_widget.dart';
 import 'package:travel_together/models/event.dart';
-import 'package:travel_together/widgets/pill_button.dart';
+import 'package:travel_together/widgets/icon_button_pill.dart';
 
 void main() {
   testWidgets("test texts", (tester) async {
@@ -58,7 +58,7 @@ void main() {
       ),
     );
 
-    await tester.tap(find.byType(PillButton));
+    await tester.tap(find.byType(IconButtonPill));
     await tester.pump();
 
     expect(find.text("Sei sicuro di voler eliminare questo viaggio?"), findsOneWidget);

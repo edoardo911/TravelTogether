@@ -6,6 +6,7 @@ import 'package:travel_together/models/user.dart';
 import 'package:travel_together/services/auth_service.dart';
 import 'package:travel_together/services/event_service.dart';
 import 'package:travel_together/services/user_service.dart';
+import 'package:travel_together/widgets/icon_button_pill.dart';
 import 'package:travel_together/widgets/pill_button.dart';
 
 class UserPage extends StatefulWidget {
@@ -110,10 +111,8 @@ class _UserPageState extends State<UserPage> {
             ),
             if(widget.isLogged) ...[
               SizedBox(width: 12),
-              PillButton(
-                text: "",
+              IconButtonPill(
                 primary: false,
-                occupyAllScreen: false,
                 icon: Icons.add,
                 onPressed: () async {
                   final result = await Navigator.pushNamed(

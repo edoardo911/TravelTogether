@@ -6,6 +6,7 @@ import 'package:travel_together/models/event.dart';
 import 'package:travel_together/models/user.dart';
 import 'package:travel_together/services/event_service.dart';
 import 'package:travel_together/services/user_service.dart';
+import 'package:travel_together/widgets/icon_button_pill.dart';
 import 'package:travel_together/widgets/pill_button.dart';
 
 class EventWidget extends StatefulWidget {
@@ -85,10 +86,8 @@ class _EventWidgetState extends State<EventWidget> {
                     ),
                   ),
                   if(widget.loggedIn) ...[
-                    PillButton(
-                      text: "",
+                    IconButtonPill(
                       icon: Icons.delete_outline,
-                      occupyAllScreen: false,
                       primary: false,
                       onPressed: () => showDialog(
                         context: context,
