@@ -7,7 +7,6 @@ import 'package:travel_together/models/user.dart';
 import 'package:travel_together/services/event_service.dart';
 import 'package:travel_together/services/user_service.dart';
 import 'package:travel_together/widgets/icon_button_pill.dart';
-import 'package:travel_together/widgets/pill_button.dart';
 
 class EventWidget extends StatefulWidget {
   final Event event;
