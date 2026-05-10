@@ -8,6 +8,7 @@ import 'package:travel_together/models/event.dart';
 //abstract class for testability
 abstract class EventService {
   Future<List<Event>> getEventsByAuthorUUID(String uuid);
+  Future<List<Event>> searchByName(String name);
   Future<bool> removeEventByID(String id);
 
   Future<bool> enroll(String eventId, String id);
@@ -27,10 +28,8 @@ class AmplifyEventService implements EventService {
         apiName: "events",
       );
       final response = await restOperation.response;
-      if(response.statusCode == 200) {
-        final rawData = jsonDecode(response.decodeBody())["events"];
-        return List<Event>.from(rawData.map((json) => Event.fromJson(json)));
-      }
+      final rawData = jsonDecode(response.decodeBody())["events"];
+      return List<Event>.from(rawData.map((json) => Event.fromJson(json)));
     } on Exception catch(e) {
       debugPrint("Exception: $e");
       Fluttertoast.showToast(
@@ -39,7 +38,26 @@ class AmplifyEventService implements EventService {
       );
       return [];
     }
-    return [];
+  }
+
+  @override
+  Future<List<Event>> searchByName(String name) async {
+    try {
+      final restOperation = Amplify.API.get(
+        "/search/$name",
+        apiName: "events",
+      );
+      final response = await restOperation.response;
+      final rawData = jsonDecode(response.decodeBody())["events"];
+      return List<Event>.from(rawData.map((json) => Event.fromJson(json)));
+    } on Exception catch(e) {
+      debugPrint("Exception: $e");
+      Fluttertoast.showToast(
+        msg: "Error retrieving events",
+        gravity: ToastGravity.BOTTOM,
+      );
+      return [];
+    }
   }
 
   @override
@@ -153,6 +171,10 @@ class EventController {
 
   Future<List<Event>> getEventsByAuthorUUID(String uuid) async {
     return await eventService.getEventsByAuthorUUID(uuid);
+  }
+
+  Future<List<Event>> searchByName(String name) async {
+    return await eventService.searchByName(name);
   }
 
   Future<bool> removeEventByID(String id) async {

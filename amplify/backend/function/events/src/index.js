@@ -4,6 +4,7 @@ const { enroll } = require("./routes/enroll");
 const { dismiss } = require("./routes/dismiss");
 const { create } = require("./routes/create_event");
 const { update } = require("./routes/update_event");
+const { searchByName } = require("./routes/search_by_name");
 
 exports.handler = async (event) => {
     const method = event.httpMethod;
@@ -27,6 +28,9 @@ exports.handler = async (event) => {
         }
         if(resource === "/update/{id}" && method === "PUT") {
             return await update(event);
+        }
+        if(resource === "/search/{name}" && method === "GET") {
+            return await searchByName(event);
         }
 
         return {
