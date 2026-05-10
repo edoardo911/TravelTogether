@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travel_together/home/search/search.dart';
 import 'package:travel_together/home/user/profile.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case 0:
         return const Text("Feed");
       case 1:
-        return const Text("Search");
+        return SearchPage();
       case 2:
         return ProfilePage(isLogged: true);
     }
