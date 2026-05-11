@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:travel_together/home/events/event_widget.dart';
+import 'package:travel_together/home/user/user_widget.dart';
 import 'package:travel_together/models/event.dart';
 import 'package:travel_together/models/user.dart';
 import 'package:travel_together/services/event_service.dart';
+import 'package:travel_together/services/user_service.dart';
 import 'package:travel_together/widgets/pill_input.dart';
 
 class SearchPage extends StatefulWidget {
@@ -22,6 +24,7 @@ enum SearchType {
 
 class _SearchPageState extends State<SearchPage> {
   final _eventController = EventController(AmplifyEventService());
+  final _userController = UserController(AmplifyUserService());
 
   final _searchController = TextEditingController();
   bool _loading = false;
@@ -45,6 +48,12 @@ class _SearchPageState extends State<SearchPage> {
       final events = await _eventController.searchByName(val);
       setState(() {
         _events = events;
+        _loading = false;
+      });
+    } else {
+      final users = await _userController.searchByName(val);
+      setState(() {
+        _users = users;
         _loading = false;
       });
     }
@@ -80,13 +89,15 @@ class _SearchPageState extends State<SearchPage> {
           }).toList(),
         ),
         const SizedBox(height: 24),
-        for (int i = 0; i < _events.length; i++) ...[
-          EventWidget(
+        for(int i = 0; i < (_viewType == SearchType.eventName ? _events.length : _users.length); i++) ...[
+          _viewType == SearchType.eventName ? EventWidget(
             refresh: () {},
             event: _events[i],
             loggedIn: false,
+          ) : UserWidget(
+            user: _users[i],
           ),
-          if (i < _events.length - 1) const SizedBox(height: 16),
+          if(i < (_viewType == SearchType.eventName ? _events.length : _users.length) - 1) const SizedBox(height: 16),
         ],
       ],
     ) : Center(child: CircularProgressIndicator());

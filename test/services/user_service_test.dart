@@ -47,6 +47,28 @@ class UserServiceTest implements UserService {
   }
 
   @override
+  Future<List<User>> searchByName(String name) async {
+    if(name == "test") {
+      return [
+        User.fromJson({
+          "id": "asd123",
+          "uuid": "asd123",
+          "name": "test",
+          "email": "test@test.com",
+        }),
+        User.fromJson({
+          "id": "asd456",
+          "uuid": "asd456",
+          "name": "test",
+          "email": "test@test.com",
+        }),
+      ];
+    } else {
+      return [];
+    }
+  }
+
+  @override
   Future<String> getCurrentUserUUID() async { return ""; }
 }
 
@@ -77,5 +99,21 @@ void main() {
     final userController = UserController(UserServiceTest());
     final users = await userController.getUsersByIDs([ "asd123", "oh093f3027grf" ]);
     expect(users.length, 1);
+  });
+
+  test("search users present", () async {
+    final userController = UserController(UserServiceTest());
+    final users = await userController.searchByName("test");
+    expect(users.length, 2);
+    expect(users[1].id, "asd456");
+    expect(users[1].uuid, "asd456");
+    expect(users[1].name, "test");
+    expect(users[1].email, "test@test.com");
+  });
+
+  test("search users not present", () async {
+    final userController = UserController(UserServiceTest());
+    final users = await userController.searchByName("asdaveibevoaovbiaes");
+    expect(users.length, 0);
   });
 }

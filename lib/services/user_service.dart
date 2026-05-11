@@ -8,6 +8,7 @@ import 'package:travel_together/models/user.dart';
 abstract class UserService {
   Future<Map<String, dynamic>> getUserById(String uuid);
   Future<List<User>> getUsersByIDs(List<String> ids);
+  Future<List<User>> searchByName(String name);
   Future<String> getCurrentUserUUID();
 }
 
@@ -54,6 +55,26 @@ class AmplifyUserService implements UserService {
   }
 
   @override
+  Future<List<User>> searchByName(String name) async {
+    try {
+      final restOperation = Amplify.API.get(
+        "/search/$name",
+        apiName: "users",
+      );
+      final response = await restOperation.response;
+      final rawData = jsonDecode(response.decodeBody())["users"];
+      return List<User>.from(rawData.map((json) => User.fromJson(json)));
+    } on Exception catch(e) {
+      debugPrint("Exception: $e");
+      Fluttertoast.showToast(
+        msg: "Error retrieving users",
+        gravity: ToastGravity.BOTTOM,
+      );
+      return [];
+    }
+  }
+
+  @override
   Future<String> getCurrentUserUUID() async {
     final user = await Amplify.Auth.getCurrentUser();
     return user.userId;
@@ -78,6 +99,10 @@ class UserController {
 
   Future<List<User>> getUsersByIDs(List<String> ids) async {
     return await userService.getUsersByIDs(ids);
+  }
+
+  Future<List<User>> searchByName(String name) async {
+    return await userService.searchByName(name);
   }
 
   Future<String> getCurrentUserUUID() async {
