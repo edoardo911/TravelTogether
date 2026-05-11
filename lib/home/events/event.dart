@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:travel_together/home/events/delete_alert.dart';
+import 'package:travel_together/home/user/user_widget.dart';
 import 'package:travel_together/models/event.dart';
 import 'package:travel_together/models/user.dart';
 import 'package:travel_together/services/event_service.dart';
@@ -201,19 +202,7 @@ class _EventPageState extends State<EventPage> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return SelectableText(
-                      _participants[index].name,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 24),
-                      onTap: () => Navigator.pushNamed(
-                        context,
-                        "/user",
-                        arguments: {
-                          "uuid": _participants[index].uuid,
-                          "logged": false,
-                        }
-                      ),
-                    );
+                    return UserWidget(user: _participants[index]);
                   },
                   separatorBuilder: (context, index) {
                     return SizedBox(height: 12);
@@ -273,7 +262,7 @@ class _EventPageState extends State<EventPage> {
               ),
               PillButton(
                 text: "Cancella",
-                icon: Icons.remove,
+                icon: Icons.delete,
                 primary: false,
                 onPressed: () => showDialog(
                   context: context,
