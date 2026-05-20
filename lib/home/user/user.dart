@@ -131,14 +131,14 @@ class _UserPageState extends State<UserPage> {
           ],
         ),
         const SizedBox(height: 24),
-        ..._events.expand((e) => [
+        for(int i = 0; i < _events.length; i++) ...[
           EventWidget(
             refresh: () => _loadData(),
-            event: e,
-            loggedIn: widget.isLogged
+            event: _events[i],
+            loggedIn: widget.isLogged,
           ),
-          const SizedBox(height: 16),
-        ]).toList()..removeLast(),
+          if(i < _events.length - 1) const SizedBox(height: 16),
+        ],
       ],
     ) : Center(child: CircularProgressIndicator());
   }
